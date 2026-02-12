@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Gamers Club - in development</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Configure Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#050505', // Deep void black
+                            surface: '#0a0a0a',
+                            accent: '#8b5cf6', // Violet
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Rajdhani', 'sans-serif'],
+                    },
+                    animation: {
+                        'gradient-x': 'gradient-x 3s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom base styles */
+        body {
+            background-color: #050505; /* Brand Dark */
+            color: #f3f4f6;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.08), transparent 25%), 
+                radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.08), transparent 25%);
+        }
+        ::selection {
+            background-color: rgba(139, 92, 246, 0.3);
+            color: #ddd6fe;
+        }
+        
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(23, 23, 23, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased overflow-x-hidden">
+
+    <!-- Navbar -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-transparent border-b border-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer group">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-violet-600 blur-lg opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                        <i data-lucide="gamepad-2" class="relative h-8 w-8 text-cyan-400 group-hover:text-violet-400 transition-colors duration-300 transform group-hover:rotate-12"></i>
+                    </div>
+                    <span class="font-display text-2xl font-bold tracking-widest text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-violet-500 transition-all duration-300">
+                        Gamers Club (LGC)
+                    </span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#services" class="relative font-display text-sm font-bold tracking-wide text-gray-400 hover:text-white transition-colors duration-300 group py-2 uppercase">
+                            Services
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-violet-500 transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                        <a href="#events" class="relative font-display text-sm font-bold tracking-wide text-gray-400 hover:text-white transition-colors duration-300 group py-2 uppercase">
+                            Tournaments
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-violet-500 transition-all duration-300 group-hover:w-full"></span>
+                        </a>
+                        <!--<a href="#community" class="relative font-display text-sm font-bold tracking-wide text-gray-400 hover:text-white transition-colors duration-300 group py-2 uppercase">
+                            Community
+                            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-500 to-violet-500 transition-all duration-300 group-hover:w-full"></span>
+                        </a>-->
+                        <a href="https://chat.whatsapp.com/IopTCw7XeZTANqpToVUoqv"
+                           target="_blank">
+                        <button class="ml-4 bg-transparent border border-cyan-500/30 hover:border-cyan-400 text-cyan-400 hover:text-white px-6 py-2 rounded-sm font-display font-bold uppercase tracking-wider transition-all duration-300 hover:bg-cyan-500/10 hover:shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+                            Join Club
+                        </button></a>
+                    </div>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button id="mobile-menu-btn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-neutral-800 focus:outline-none">
+                        <i id="menu-icon" data-lucide="menu" class="h-6 w-6 block"></i>
+                        <i id="close-icon" data-lucide="x" class="h-6 w-6 hidden"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="md:hidden transition-all duration-300 ease-in-out max-h-0 opacity-0 overflow-hidden bg-neutral-900/95 backdrop-blur-xl border-b border-neutral-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#services" class="text-gray-300 hover:text-cyan-400 block px-3 py-2 rounded-md text-base font-bold font-display uppercase">Services</a>
+                <a href="#events" class="text-gray-300 hover:text-cyan-400 block px-3 py-2 rounded-md text-base font-bold font-display uppercase">Tournaments</a>
+                <!--<a href="#community" class="text-gray-300 hover:text-cyan-400 block px-3 py-2 rounded-md text-base font-bold font-display uppercase">Community</a>-->
+                <a href="#contact" class="text-gray-300 hover:text-cyan-400 block px-3 py-2 rounded-md text-base font-bold font-display uppercase">Contact</a>
+                <a href="https://chat.whatsapp.com/IopTCw7XeZTANqpToVUoqv"
+                    target="_blank">
+                <button class="w-full text-left mt-4 bg-gradient-to-r from-cyan-600 to-violet-600 text-white px-3 py-3 rounded-md font-bold font-display tracking-wider border border-transparent">
+                    Join Club
+                </button></a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+        <!-- Background Grid & Effects -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <!-- Grid Pattern -->
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+            
+            <!-- Glowing Orbs -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-cyan-500/10 rounded-full blur-[100px] opacity-50 mix-blend-screen"></div>
+            <div class="absolute bottom-0 left-0 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[120px] opacity-40 mix-blend-screen"></div>
+            <div class="absolute top-1/4 right-0 w-[400px] h-[400px] bg-fuchsia-600/10 rounded-full blur-[100px] opacity-30 mix-blend-screen"></div>
+        </div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full border border-cyan-500/20 bg-cyan-950/30 backdrop-blur-md animate-float">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+                </span>
+                <span class="text-cyan-300 text-xs font-bold tracking-widest uppercase font-display">Lucknow's ELITE ESPORTS CREW</span>
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tight text-white mb-8 font-display leading-[0.9]">
+                LEVEL UP <br />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 animate-gradient-x drop-shadow-[0_0_30px_rgba(139,92,246,0.3)]">
+                    YOUR GAME
+                </span>
+            </h1>
+            
+            <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-400 mb-10 leading-relaxed font-light">
+                Run Epic Tournaments. Build pro teams. Command the battelfield. <br/>
+                <span class="text-white font-medium">We take care of everything, you clutch the win.</span>
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-5">
+                <a href="#contact" class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white transition-all duration-300 bg-gradient-to-r from-violet-600 to-fuchsia-600 font-display rounded-sm hover:scale-105 hover:shadow-[0_0_30px_rgba(139,92,246,0.5)]">
+                    <span class="relative flex items-center gap-2 tracking-wider">
+                        HOST WITH OUR TEAM <i data-lucide="zap" class="w-5 h-5 group-hover:text-yellow-300 transition-colors"></i>
+                    </span>
+                </a>
+                <a href="#services" class="group inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-300 transition-all duration-300 bg-neutral-900 border border-neutral-800 font-display rounded-sm hover:bg-neutral-800 hover:text-white hover:border-cyan-500/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.2)]">
+                    <span class="tracking-wider">EXPLORE</span>
+                </a>
+            </div>
+
+            <!-- Floating Stats (Glassmorphism) -->
+            <div class="mt-24 grid grid-cols-2 gap-4 md:gap-8 md:grid-cols-4 border-t border-white/5 pt-12">
+                <div class="flex flex-col items-center p-4 rounded-xl hover:bg-white/5 transition-colors">
+                    <dt class="order-2 mt-2 text-xs font-bold text-cyan-500 uppercase tracking-widest font-display">Events Hosted</dt>
+                    <dd class="order-1 text-4xl md:text-5xl font-bold text-white font-display">25+</dd>
+                </div>
+                <div class="flex flex-col items-center p-4 rounded-xl hover:bg-white/5 transition-colors">
+                    <dt class="order-2 mt-2 text-xs font-bold text-violet-500 uppercase tracking-widest font-display">Active Members</dt>
+                    <dd class="order-1 text-4xl md:text-5xl font-bold text-white font-display">200+</dd>
+                </div>
+                <div class="flex flex-col items-center p-4 rounded-xl hover:bg-white/5 transition-colors">
+                    <dt class="order-2 mt-2 text-xs font-bold text-fuchsia-500 uppercase tracking-widest font-display">Prize Pool</dt>
+                    <dd class="order-1 text-4xl md:text-5xl font-bold text-white font-display">INR</dd>
+                </div>
+                <div class="flex flex-col items-center p-4 rounded-xl hover:bg-white/5 transition-colors">
+                    <dt class="order-2 mt-2 text-xs font-bold text-green-500 uppercase tracking-widest font-display">Pro Teams</dt>
+                    <dd class="order-1 text-4xl md:text-5xl font-bold text-white font-display">Creating</dd>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 relative overflow-hidden bg-[#080808]">
+        <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-violet-500 font-bold tracking-[0.2em] uppercase text-sm mb-3 font-display">Our Expertise</h2>
+                <h3 class="text-3xl md:text-5xl font-bold text-white font-display">
+                    BUILT FOR <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-violet-500">GAMERS</span>
+                </h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Service 1 -->
+                <div class="group relative p-[1px] rounded-2xl bg-gradient-to-b from-neutral-800 to-neutral-950 hover:from-cyan-500 hover:to-violet-600 transition-all duration-500">
+                    <div class="relative h-full bg-[#0a0a0a] rounded-xl p-8 flex flex-col items-start transition-all duration-300">
+                        <div class="absolute inset-0 bg-cyan-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative p-3 rounded-lg bg-neutral-900 border border-neutral-800 mb-6 group-hover:scale-110 group-hover:border-cyan-500/50 transition-all duration-300">
+                            <i data-lucide="trophy" class="w-8 h-8 text-cyan-400"></i>
+                        </div>
+                        <h3 class="relative text-xl font-bold text-white mb-3 font-display uppercase tracking-wide">Tournaments</h3>
+                        <p class="relative text-gray-400 text-sm leading-relaxed group-hover:text-gray-300">Complete bracket management, live streaming, and prize distribution for Valorant, EA FC & Tekken...</p>
+                    </div>
+                </div>
+                
+                <!-- Service 2 -->
+                <div class="group relative p-[1px] rounded-2xl bg-gradient-to-b from-neutral-800 to-neutral-950 hover:from-violet-500 hover:to-fuchsia-600 transition-all duration-500">
+                    <div class="relative h-full bg-[#0a0a0a] rounded-xl p-8 flex flex-col items-start transition-all duration-300">
+                        <div class="absolute inset-0 bg-violet-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative p-3 rounded-lg bg-neutral-900 border border-neutral-800 mb-6 group-hover:scale-110 group-hover:border-violet-500/50 transition-all duration-300">
+                            <i data-lucide="users" class="w-8 h-8 text-violet-400"></i>
+                        </div>
+                        <h3 class="relative text-xl font-bold text-white mb-3 font-display uppercase tracking-wide">Team Management</h3>
+                        <p class="relative text-gray-400 text-sm leading-relaxed group-hover:text-gray-300">Professional Team Management. Contract handling.</p>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="group relative p-[1px] rounded-2xl bg-gradient-to-b from-neutral-800 to-neutral-950 hover:from-fuchsia-500 hover:to-rose-600 transition-all duration-500">
+                    <div class="relative h-full bg-[#0a0a0a] rounded-xl p-8 flex flex-col items-start transition-all duration-300">
+                        <div class="absolute inset-0 bg-fuchsia-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative p-3 rounded-lg bg-neutral-900 border border-neutral-800 mb-6 group-hover:scale-110 group-hover:border-fuchsia-500/50 transition-all duration-300">
+                            <i data-lucide="server" class="w-8 h-8 text-fuchsia-400"></i>
+                        </div>
+                        <h3 class="relative text-xl font-bold text-white mb-3 font-display uppercase tracking-wide">LAN Infrastructure</h3>
+                        <p class="relative text-gray-400 text-sm leading-relaxed group-hover:text-gray-300">High-performance gaming rigs, low-latency networking, offline events.</p>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="group relative p-[1px] rounded-2xl bg-gradient-to-b from-neutral-800 to-neutral-950 hover:from-green-500 hover:to-emerald-600 transition-all duration-500">
+                    <div class="relative h-full bg-[#0a0a0a] rounded-xl p-8 flex flex-col items-start transition-all duration-300">
+                        <div class="absolute inset-0 bg-green-500/5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative p-3 rounded-lg bg-neutral-900 border border-neutral-800 mb-6 group-hover:scale-110 group-hover:border-green-500/50 transition-all duration-300">
+                            <i data-lucide="calendar" class="w-8 h-8 text-green-400"></i>
+                        </div>
+                        <h3 class="relative text-xl font-bold text-white mb-3 font-display uppercase tracking-wide">Community Events</h3>
+                        <p class="relative text-gray-400 text-sm leading-relaxed group-hover:text-gray-300"> Frequent Gaming Events Monthly</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Past Events Section -->
+    <section id="events" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-bold text-white font-display mb-4 uppercase tracking-tight">Legendary Matches</h2>
+                    <p class="text-gray-400 max-w-xl">Witness the Lucknow's most intense esports showdowns.</p>
+                </div>
+                <button class="group text-cyan-400 font-bold hover:text-white transition-colors flex items-center gap-2 font-display uppercase tracking-wider">
+                    View Gallery <i data-lucide="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+           
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Valorant/FPS Theme -->
+                <div class="group relative h-80 rounded-xl overflow-hidden cursor-pointer border border-white/10 hover:border-violet-500/50 transition-colors duration-300 shadow-2xl">
+                    <!-- BACKGROUND IMAGE -->
+                    <div class="absolute inset-0 w-full h-full group-hover:scale-110 transition-transform duration-700 ease-out">
+                        <img 
+                            src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1000&auto=format&fit=crop" 
+                            alt="Esports Arena" 
+                            class="w-full h-full object-cover"
+                        >
+                        <div class="absolute inset-0 bg-violet-900/40 mix-blend-multiply group-hover:bg-violet-900/20 transition-colors duration-300"></div>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
+                    </div>
+
+                    <!-- Gradient Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-90"></div>
+                    
+                    <!-- Content -->
+                    <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                        <div class="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <span class="inline-block px-3 py-1 bg-violet-600/90 backdrop-blur-sm text-white text-[10px] font-bold tracking-widest uppercase rounded-sm mb-3 shadow-lg border border-violet-500/30">
+                                Valorant 
+                            </span>
+                            <h4 class="text-2xl font-bold text-white mb-2 leading-tight font-display">Lucknow Major</h4>
+                            <div class="flex items-center gap-4 text-gray-300 text-xs font-medium uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 transform translate-y-2 group-hover:translate-y-0">
+                                <span class="flex items-center"><i data-lucide="crosshair" class="w-4 h-4 mr-1.5 text-violet-400"></i> Teams</span>
+                                <span class="flex items-center"><i data-lucide="trophy" class="w-4 h-4 mr-1.5 text-violet-400"></i> INR</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Card 2: Battle Royale Theme -->
+                <div class="group relative h-80 rounded-xl overflow-hidden cursor-pointer border border-white/10 hover:border-cyan-500/50 transition-colors duration-300 shadow-2xl">
+                    <!-- BACKGROUND IMAGE -->
+                    <div class="absolute inset-0 w-full h-full group-hover:scale-110 transition-transform duration-700 ease-out">
+                        <img 
+                            src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?q=80&w=1000&auto=format&fit=crop" 
+                            alt="Battle Royale Map" 
+                            class="w-full h-full object-cover"
+                        >
+                        <div class="absolute inset-0 bg-cyan-900/40 mix-blend-multiply group-hover:bg-cyan-900/20 transition-colors duration-300"></div>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
+                    </div>
+
+                    <!-- Gradient Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-90"></div>
+                    
+                    <!-- Content -->
+                    <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                        <div class="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <span class="inline-block px-3 py-1 bg-cyan-600/90 backdrop-blur-sm text-white text-[10px] font-bold tracking-widest uppercase rounded-sm mb-3 shadow-lg border border-cyan-500/30">
+                                Event
+                            </span>
+                            <h4 class="text-2xl font-bold text-white mb-2 leading-tight font-display">Coming Soon</h4>
+                            <div class="flex items-center gap-4 text-gray-300 text-xs font-medium uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 transform translate-y-2 group-hover:translate-y-0">
+                                <span class="flex items-center"><i data-lucide="users" class="w-4 h-4 mr-1.5 text-cyan-400"></i> Teams</span>
+                                <span class="flex items-center"><i data-lucide="trophy" class="w-4 h-4 mr-1.5 text-cyan-400"></i> INR</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Fighting Game Theme -->
+                <div class="group relative h-80 rounded-xl overflow-hidden cursor-pointer border border-white/10 hover:border-fuchsia-500/50 transition-colors duration-300 shadow-2xl">
+                    <!-- BACKGROUND IMAGE -->
+                    <div class="absolute inset-0 w-full h-full group-hover:scale-110 transition-transform duration-700 ease-out">
+                        <img 
+                            src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=1000&auto=format&fit=crop" 
+                            alt="Arcade Fighting" 
+                            class="w-full h-full object-cover"
+                        >
+                        <div class="absolute inset-0 bg-fuchsia-900/40 mix-blend-multiply group-hover:bg-fuchsia-900/20 transition-colors duration-300"></div>
+                        <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
+                    </div>
+
+                    <!-- Gradient Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent opacity-90"></div>
+                    
+                    <!-- Content -->
+                    <div class="absolute inset-0 p-6 flex flex-col justify-end">
+                        <div class="transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                            <span class="inline-block px-3 py-1 bg-fuchsia-600/90 backdrop-blur-sm text-white text-[10px] font-bold tracking-widest uppercase rounded-sm mb-3 shadow-lg border border-fuchsia-500/30">
+                                Event
+                            </span>
+                            <h4 class="text-2xl font-bold text-white mb-2 leading-tight font-display">EA FC </h4>
+                            <div class="flex items-center gap-4 text-gray-300 text-xs font-medium uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75 transform translate-y-2 group-hover:translate-y-0">
+                                <span class="flex items-center"><i data-lucide="swords" class="w-4 h-4 mr-1.5 text-fuchsia-400"></i> Teams</span>
+                                <span class="flex items-center"><i data-lucide="trophy" class="w-4 h-4 mr-1.5 text-fuchsia-400"></i> INR</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> 
+    
+    <!-- Updated Contact Section (No Form) -->
+    <section id="contact" class="py-24 relative border-t border-neutral-900 overflow-hidden">
+        <!-- Background Ambient Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[100px] -z-10 pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <div class="glass-panel rounded-3xl p-10 md:p-16 shadow-[0_0_50px_rgba(0,0,0,0.5)]">
+                
+                <h2 class="text-4xl md:text-6xl font-bold text-white font-display mb-6">READY TO <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">CONNECT?</span></h2>
+                <p class="text-gray-400 mb-12 text-lg md:text-xl max-w-2xl mx-auto font-light">
+                    Whether you're organizing a college fest Esports tournament or looking for a team manager, let's make it happen.
+                </p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mb-12">
+                    <!-- Email Card -->
+                    <a href="mailto:contact@lucknowgamers.com" class="group p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-cyan-500/50 hover:bg-neutral-900 transition-all duration-300">
+                        <div class="w-14 h-14 bg-neutral-800 rounded-full flex items-center justify-center text-cyan-400 mx-auto mb-4 group-hover:scale-110 group-hover:bg-cyan-500/20 transition-all duration-300 shadow-lg">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1 font-display uppercase tracking-wide">Email Us</h3>
+                        <p class="text-cyan-400/80 text-sm font-medium">vs1O8@outlook.com</p>
+                    </a>
+
+                     <!-- Location Card -->
+                      
+                    <div class="group p-6 rounded-2xl bg-neutral-900/50 border border-neutral-800 hover:border-fuchsia-500/50 hover:bg-neutral-900 transition-all duration-300 cursor-default">
+                         <div class="w-14 h-14 bg-neutral-800 rounded-full flex items-center justify-center text-fuchsia-400 mx-auto mb-4 group-hover:scale-110 group-hover:bg-fuchsia-500/20 transition-all duration-300 shadow-lg">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-white font-bold text-lg mb-1 font-display uppercase tracking-wide">9792628108</h3>
+                        <p class="text-fuchsia-400/80 text-sm font-medium">over the phone</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <a href="https://chat.whatsapp.com/IopTCw7XeZTANqpToVUoqv"
+                    target="_blank">
+                     <button class="w-full sm:w-auto bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-bold py-4 px-10 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.4)] transition-all transform hover:-translate-y-1 text-lg font-display tracking-widest uppercase flex items-center justify-center gap-3">
+                        <i data-lucide="message-circle" class="w-5 h-5"></i> Join Us
+                    </button>
+                    </a>
+                    <!--<button class="w-full sm:w-auto bg-transparent border border-white/10 hover:border-white/30 text-white font-bold py-4 px-10 rounded-full transition-all text-lg font-display tracking-widest uppercase hover:bg-white/5">
+                        Download Brochure
+                    </button>-->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-[#030303] border-t border-white/5 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i data-lucide="gamepad-2" class="h-6 w-6 text-violet-500"></i>
+                        <span class="font-display text-2xl font-bold text-white tracking-widest">Gamers Club</span>
+                    </div>
+                    <p class="text-gray-500 max-w-sm mb-8 text-sm leading-relaxed">
+                            Shaping Lucknow's esports future-where casual gamers grow, compete, and rise to the pro stage.....
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-lg bg-neutral-900 border border-white/5 flex items-center justify-center text-gray-400 hover:border-cyan-500 hover:text-cyan-400 hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] transition-all duration-300">
+                            <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg bg-neutral-900 border border-white/5 flex items-center justify-center text-gray-400 hover:border-fuchsia-500 hover:text-fuchsia-400 hover:shadow-[0_0_15px_rgba(217,70,239,0.2)] transition-all duration-300">
+                            <i data-lucide="crosshair" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg bg-neutral-900 border border-white/5 flex items-center justify-center text-gray-400 hover:border-violet-500 hover:text-violet-400 hover:shadow-[0_0_15px_rgba(139,92,246,0.2)] transition-all duration-300">
+                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-lg bg-neutral-900 border border-white/5 flex items-center justify-center text-gray-400 hover:border-red-500 hover:text-red-400 hover:shadow-[0_0_15px_rgba(239,68,68,0.2)] transition-all duration-300">
+                            <i data-lucide="bomb" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 font-display uppercase tracking-widest text-sm text-cyan-500">Platform</h4>
+                    <ul class="space-y-3 text-gray-500 text-sm font-medium">
+                        <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-cyan-500 rounded-full"></span> Tournaments</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-cyan-500 rounded-full"></span> Teams</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-cyan-500 rounded-full"></span> Partners</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6 font-display uppercase tracking-widest text-sm text-violet-500">Support</h4>
+                    <ul class="space-y-3 text-gray-500 text-sm font-medium">
+                        <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-violet-500 rounded-full"></span> Contact Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-violet-500 rounded-full"></span> Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors flex items-center gap-2"><span class="w-1 h-1 bg-violet-500 rounded-full"></span> Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-600 uppercase tracking-widest">
+                <p>&copy; 2025 Gamers Club.</p>
+                <p class="flex items-center gap-2">Designed for <i data-lucide="heart" class="w-3 h-3 text-red-500 fill-red-500"></i> Gamers</p>
+                <a href="https://www.instagram.com/_vs108?igsh=dDRncmluNTVkcXd1" target="_blank" class="flex items-center gap-2 hover:text-violet-400 transition-colors">
+                    By <i data-lucide="instagram" class="w-3 h-3"></i> _vs108</a>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts for Interactivity -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('bg-neutral-950/80', 'backdrop-blur-xl', 'border-white/5', 'shadow-2xl');
+                navbar.classList.remove('bg-transparent', 'border-transparent');
+            } else {
+                navbar.classList.remove('bg-neutral-950/80', 'backdrop-blur-xl', 'border-white/5', 'shadow-2xl');
+                navbar.classList.add('bg-transparent', 'border-transparent');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuIcon = document.getElementById('menu-icon');
+        const closeIcon = document.getElementById('close-icon');
+        let isMenuOpen = false;
+
+        mobileMenuBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileMenu.classList.remove('max-h-0', 'opacity-0');
+                mobileMenu.classList.add('max-h-96', 'opacity-100');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('max-h-0', 'opacity-0');
+                mobileMenu.classList.remove('max-h-96', 'opacity-100');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        });
+
+        // Close mobile menu on link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                isMenuOpen = false;
+                mobileMenu.classList.add('max-h-0', 'opacity-0');
+                mobileMenu.classList.remove('max-h-96', 'opacity-100');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
